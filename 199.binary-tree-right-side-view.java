@@ -21,8 +21,8 @@
  * }
  */
 class Solution {
-    // 深さ -> nodeを左から順番に登録するリスト
-    private Map<Integer, List<Integer>> map = new HashMap<Integer, List<Integer>>();
+    // 深さ -> nodeを右から順番に登録するマップ
+    private Map<Integer, Integer> map = new HashMap<Integer, Integer>();
 
     public List<Integer> rightSideView(TreeNode root) {
         // 各深さで一番右にくるnodeを特定すれば良い
@@ -31,8 +31,7 @@ class Solution {
         List<Integer> result = new ArrayList<Integer>();
 
         for (Integer dep : map.keySet()) {
-            List<Integer> l = map.get(dep);
-            result.add(l.get(l.size()-1));
+            result.add(map.get(dep));
         }
 
         return result;
@@ -40,11 +39,14 @@ class Solution {
 
     private void help(TreeNode node, int depth) {
         if (node != null) {
-            List<Integer> list = map.getOrDefault(depth, new ArrayList<>());
-            list.add(node.val);
-            map.put(depth, list);
-            help(node.left, depth+1);
+
+            if (map.containsKey(depth)) {
+                // すでに先客がいるので何もしない
+            } else {
+                map.put(depth, node.val);
+            }
             help(node.right, depth+1);
+            help(node.left, depth+1);
         }
     }
 }
