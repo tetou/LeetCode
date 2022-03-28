@@ -1,3 +1,5 @@
+import java.util.PriorityQueue;
+
 /*
  * @lc app=leetcode id=23 lang=java
  *
@@ -17,7 +19,7 @@
  */
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-        List<Integer> list = new ArrayList<>();
+        PriorityQueue<Integer> list = new PriorityQueue<Integer>();
         for (int i = 0; i<lists.length; i++) {
             ListNode head = lists[i];
             while (head != null) {
@@ -25,11 +27,10 @@ class Solution {
                 head = head.next;
             }
         }
-        Collections.sort(list);
         ListNode dummyHead = new ListNode(0);
         ListNode cursor = dummyHead;
-        for (Integer i : list) {
-            cursor.next = new ListNode(i);
+        while (!list.isEmpty()) {
+            cursor.next = new ListNode(list.poll());
             cursor = cursor.next;
         }
         return dummyHead.next;
