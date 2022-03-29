@@ -11,11 +11,9 @@ class Solution {
         int result = Integer.MIN_VALUE;
         // Brute force
         for (int i = 0; i < n; i++) {
+            int min = heights[i];
             for (int j = i; j < n; j++) {
-                int min = Integer.MAX_VALUE; 
-                for (int k = i; k <= j; k++) {
-                    min = Math.min(min, heights[k]);
-                }
+                min = Math.min(min, heights[j]);
                 result = Math.max(result, min * (j-i+1));
             }
         }
