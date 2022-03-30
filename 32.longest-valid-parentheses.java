@@ -7,37 +7,24 @@
 // @lc code=start
 class Solution {
     public int longestValidParentheses(String s) {
-        int n = s.length();
-        int result = 0;
-        int sum = 0;
-        // 総当たりで実装する
-        for (int i = 0; i < n; i++) {
-            for (int j = i; j < n;j++) {
-                // 検査対象の文字列
-                String sub = s.substring(i,j+1);
-                // Stackを使い、ちゃんとかっこが閉じられていることを確認する
-                Stack<Character> stack = new Stack<Character>();
-                boolean flg = true;
-                for (int k = 0; k < sub.length(); k++) {
-                    char tmp = sub.charAt(k);
+        int maxans = 0;
+        int[] dp = new int[s.length()];
 
-                    if (tmp == '(') {
-                        stack.push(tmp);
-                    } else {
-                        if (!stack.isEmpty()) {
-                            stack.pop();
-                        } else {
-                            // 閉じかっこに対応する開きかっこがないので終了
-                            flg = false;
-                            break;
-                        }
-                    }
+        for (int i = 1; i < s.length(); i++) {
+            if (s.charAt(i) == ')') {
+                if (s.charAt(i - 1) == '(') {
+                    dp[i] = (i>=2 ? dp[i-2]:0) + 2;
+                } else if (i - dp[i-1] > 0 && s.charAt(i - dp[i-1] - 1) == '(') {
+                    dp[i] = dp[i-1] + ((i-dp[i-1]) >= 2 ? dp[i-dp[i-1] -2] : 0) + 2;
                 }
-                // 上記のチェックが全て通った
-                if (flg && stack.isEmpty()) result = Math.max(result, sub.length());
             }
         }
-        return result;
+
+        for (int d : dp) {
+            maxans = Math.max(maxans, d);
+        }
+
+        return maxans;
     }
 }
 // @lc code=end
